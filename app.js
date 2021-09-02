@@ -12,16 +12,32 @@ fetch(
   .then((response) => response.json())
   .then((responseData) => {
     citiesStates.push(...responseData);
-    console.log(citiesStates);
+    //console.log(citiesStates);
   });
 
 function findMatches(wordToMatch, citiesStates) {
   return citiesStates.filter((cityState) => {
     const regX = new RegExp(wordToMatch, "gi");
-    return cityState.city.match(regX) || cityState.cityState.match(regX);
+    return cityState.city.match(regX) || cityState.state.match(regX);
   });
 }
 
 function displayMatches() {
-  findMatches(citiesStates);
+  const findArray = findMatches(this.value, citiesStates);
+  const matchEl = findArray
+    .map((place) => {
+      const regX = new RegExp(this.value, "gi");
+      const cityName = place.city.replace(
+        regX,
+        `<span class="highlight">${this.value}</span>`
+      );
+      const stateName = place.state.replace(
+        regX,
+        `<span class="highlight">${this.value}</span>`
+      );
+      return `<li class="name">${cityName}, ${stateName}</li>`;
+    })
+    .join("");
+
+  suggestionsContainer.innerHTML = matchEl;
 }
