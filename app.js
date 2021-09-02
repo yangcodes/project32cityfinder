@@ -14,6 +14,14 @@ fetch(
     citiesStates.push(...responseData);
     console.log(citiesStates);
   });
+
+function findMatches(wordToMatch, citiesStates) {
+  return citiesStates.filter((cityState) => {
+    const regX = new RegExp(wordToMatch, "gi");
+    return cityState.city.match(regX) || cityState.cityState.match(regX);
+  });
+}
+
 function displayMatches() {
-  console.log("meow");
+  findMatches(citiesStates);
 }
